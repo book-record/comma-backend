@@ -1,6 +1,4 @@
 require('dotenv').config();
-require('./database/connect');
-
 const path = require('path');
 
 const cookieParser = require('cookie-parser');
@@ -9,12 +7,15 @@ const express = require('express');
 const helmet = require('helmet');
 const logger = require('morgan');
 
+const connect = require('./database/connect');
+
+connect();
+
+const app = express();
 const corsOptions = {
   origin: process.env.CORS_ORIGIN_URL,
   credentials: true,
 };
-
-const app = express();
 
 app.use(helmet());
 app.use(logger('dev'));
