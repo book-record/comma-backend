@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/User');
 
-exports.login = async (req, res, next) => {
+exports.signIn = async (req, res, next) => {
   const { email, nickname } = req.body;
   let user = await User.findOne({ email }).lean();
 
@@ -22,7 +22,7 @@ exports.login = async (req, res, next) => {
     }
   );
 
-  res.send({
+  res.json({
     userId: user._id,
     email: user.email,
     nickname: user.nickname,
