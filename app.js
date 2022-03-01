@@ -38,7 +38,9 @@ app.use((req, res) => {
 
 app.use(function (error, req, res, next) {
   const message =
-    req.app.get('env') === 'development' ? error.message : 'Server error';
+    req.app.get('env') === 'development'
+      ? error.message
+      : 'Invalid Server Error';
 
   console.error(error);
   res.status(error.status || 500).send(message);
