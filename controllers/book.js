@@ -35,3 +35,18 @@ exports.createBook = async (req, res, next) => {
 
   res.json({ result: 'ok' });
 };
+
+exports.createAudio = async (req, res, next) => {
+  const { id } = req.params;
+  const { creator, nickname } = req.body;
+
+  const awsAudioFile = req.file.location;
+
+  await Book.findByIdAndUpdate(id, {
+    $push: { players: creator, nickname, sound: awsAudioFile, likes: [] },
+  });
+
+  res.json({
+    result: 'ok',
+  });
+};
