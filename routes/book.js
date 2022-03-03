@@ -10,6 +10,8 @@ router.get('/list', bookController.getBookList);
 
 router.post('/new', bookController.createBook);
 
+router.get('/:id', bookController.getBook);
+
 router.post(
   ':id',
   validateBookId,
