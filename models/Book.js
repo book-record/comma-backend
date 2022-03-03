@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const playerSchema = new mongoose.Schema({
   id: {
     type: mongoose.Types.ObjectId,
-    require: true,
+    required: true,
   },
   creator: {
     type: mongoose.Schema.Types.ObjectId,
@@ -19,7 +19,6 @@ const playerSchema = new mongoose.Schema({
   },
   likes: {
     type: Array,
-    required: true,
   },
 });
 
@@ -40,10 +39,7 @@ const BookSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  players: {
-    type: [playerSchema],
-    required: true,
-  },
+  players: [playerSchema],
 });
 
 module.exports = mongoose.model('Book', BookSchema);
