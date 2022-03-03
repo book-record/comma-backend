@@ -1,6 +1,7 @@
 const Book = require('../models/Book');
+const Reviwer = require('../models/Reviwer');
 
-exports.getBookList = async (req, res, next) => {
+exports.getBookList = async (req, res) => {
   const PAGE_SIZE = 8;
   const page = parseInt(req.query.page || '0');
   const total = await Book.countDocuments({});
@@ -15,13 +16,13 @@ exports.getBookList = async (req, res, next) => {
   });
 };
 
-exports.createBook = async (req, res, next) => {
+exports.createBook = async (req, res) => {
   let { title, authors, thumbnail, contents } = req.body;
   const allBooks = await Book.find({});
 
   for (const key of allBooks) {
     if (title === key.bookTitle) {
-      return next('이미 있는 책입니다');
+      return res.json({ error: '같은 책이 존재합니다' });
     }
   }
 
@@ -30,20 +31,27 @@ exports.createBook = async (req, res, next) => {
     author: authors[0],
     imageUrl: thumbnail,
     introduction: contents,
-    players: [],
+    reviwerHistory: [],
   });
 
   res.json({ result: 'ok' });
 };
 
-exports.createAudio = async (req, res, next) => {
+exports.createAudio = async (req, res) => {
   const { id } = req.params;
   const { creator, nickname } = req.body;
 
   const awsAudioFile = req.file.location;
 
+  const result = await Reviwer.create({
+    id: creator,
+    nickname,
+    sound: awsAudioFile,
+    likes: [],
+  });
+
   await Book.findByIdAndUpdate(id, {
-    $push: { players: creator, nickname, sound: awsAudioFile, likes: [] },
+    $push: { reviwerHistory: result._id },
   });
 
   res.json({
@@ -51,12 +59,12 @@ exports.createAudio = async (req, res, next) => {
   });
 };
 
-exports.getBook = async (req, res, next) => {
+exports.getBook = async (req, res) => {
   const { id } = req.params;
-  const book = await Book.findById(id);
+  const book = await Book.findById(id).populate(['reviwerHistory']);
 
   if (!book) {
-    return next('책 정보가 없습니다');
+    return res.json({ error: '책이 존재 하지 않습니다' });
   }
 
   res.json({ book });
