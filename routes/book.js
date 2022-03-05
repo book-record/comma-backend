@@ -1,8 +1,7 @@
 const express = require('express');
 
 const bookController = require('../controllers/book');
-const { uploadAudio } = require('../middlewares/audioFileUpload');
-const { validateBookId } = require('../middlewares/validators');
+const audioFileUpload = require('../middlewares/audioFileUpload');
 
 const router = express.Router();
 
@@ -13,9 +12,8 @@ router.post('/new', bookController.createBook);
 router.get('/:id', bookController.getBook);
 
 router.post(
-  ':id',
-  validateBookId,
-  uploadAudio.single('audiofile'),
+  '/:id/:userId',
+  audioFileUpload.single('audio'),
   bookController.createAudio
 );
 

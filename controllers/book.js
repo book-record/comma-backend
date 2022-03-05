@@ -1,5 +1,6 @@
 const Book = require('../models/Book');
-const Reviwer = require('../models/Reviwer');
+const Reviewer = require('../models/Reviewer');
+const User = require('../models/User');
 
 exports.getBookList = async (req, res) => {
   const PAGE_SIZE = 8;
@@ -38,20 +39,21 @@ exports.createBook = async (req, res) => {
 };
 
 exports.createAudio = async (req, res) => {
-  const { id } = req.params;
-  const { creator, nickname } = req.body;
+  const { id, userId } = req.params;
 
   const awsAudioFile = req.file.location;
 
-  const result = await Reviwer.create({
-    id: creator,
-    nickname,
+  const user = await User.findById({ _id: userId });
+
+  const result = await Reviewer.create({
+    id: user._id,
+    nickname: user.nickname,
     sound: awsAudioFile,
     likes: [],
   });
 
   await Book.findByIdAndUpdate(id, {
-    $push: { reviwerHistory: result._id },
+    $push: { reviewerHistory: result._id },
   });
 
   res.json({
@@ -61,11 +63,11 @@ exports.createAudio = async (req, res) => {
 
 exports.getBook = async (req, res) => {
   const { id } = req.params;
-  const book = await Book.findById(id).populate(['reviwerHistory']);
+  const book = await Book.findById(id).populate('reviewerHistory');
 
   if (!book) {
     return res.json({ error: '책이 존재 하지 않습니다' });
   }
 
-  res.json({ book });
+  res.json(book);
 };

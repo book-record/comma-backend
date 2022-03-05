@@ -1,6 +1,6 @@
 const express = require('express');
 
-const reviwerController = require('../controllers/auth');
+const reviwerController = require('../controllers/review');
 
 const router = express.Router();
 
