@@ -5,4 +5,6 @@ const router = express.Router();
 
 router.get('/:id/list', reportController.getReportList);
 
+router.post('/new', reportController.createReport);
+
 module.exports = router;

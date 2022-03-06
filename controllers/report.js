@@ -1,4 +1,5 @@
 // eslint-disable-next-line no-unused-vars
+const Book = require('../models/Book');
 const Report = require('../models/Report');
 const User = require('../models/User');
 
@@ -19,5 +20,25 @@ exports.getReportList = async (req, res) => {
   return res.json({
     totalPage: Math.ceil(total / PAGE_SIZE),
     reportList,
+  });
+};
+
+exports.createReport = async (req, res) => {
+  const { id, bookTitle, imageUrl, title, text, date } = req.body;
+
+  const result = await Report.create({
+    bookTitle,
+    imageUrl,
+    title,
+    text,
+    dDay: date,
+  });
+
+  await User.findByIdAndUpdate(id, {
+    $push: { reportHistory: result._id },
+  });
+
+  res.json({
+    result: 'ok',
   });
 };
