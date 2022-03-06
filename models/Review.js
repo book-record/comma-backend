@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const ReviwerSchema = new mongoose.Schema({
+const ReviewSchema = new mongoose.Schema({
   id: {
     type: mongoose.Types.ObjectId,
     required: true,
@@ -19,4 +19,4 @@ const ReviwerSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('Reviwer', ReviwerSchema);
+module.exports = mongoose.model('Review', ReviewSchema);

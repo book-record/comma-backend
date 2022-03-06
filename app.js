@@ -11,7 +11,8 @@ const logger = require('morgan');
 const connect = require('./database/connect');
 const authRouter = require('./routes/auth');
 const bookRouter = require('./routes/book');
-const reviwerRouter = require('./routes/reviwer');
+const reportRouter = require('./routes/report');
+const reviewRouter = require('./routes/review');
 const { ERROR } = require('./utils/constants');
 
 connect();
@@ -32,7 +33,8 @@ app.use(cors(corsOptions));
 
 app.use('/auth', authRouter);
 app.use('/book', bookRouter);
-app.use('/reviwer', reviwerRouter);
+app.use('/review', reviewRouter);
+app.use('/report', reportRouter);
 
 app.use((req, res) => {
   res.status(404).send(ERROR.NOT_FOUND);

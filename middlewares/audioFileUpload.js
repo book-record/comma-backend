@@ -8,17 +8,31 @@ const s3 = new AWS.S3({
   region: process.env.AWS_REGION,
 });
 
-exports.uploadAudio = multer({
-  storage: multerS3({
-    s3: s3,
-    bucket: process.env.AWS_BUCKET_NAME,
-    acl: 'public-read',
-    key: function (req, file, callback) {
-      try {
-        callback(null, file.originalname);
-      } catch (error) {
-        return callback(new Error(error));
+const storage = multerS3({
+  s3: s3,
+  bucket: process.env.AWS_BUCKET_NAME,
+  key: function (req, file, callback) {
+    try {
+      const fileType = file.mimetype.split('/')[0] !== 'audio';
+      if (fileType) {
+        return callback(new Error('에러가 발생했습니다'));
       }
-    },
-  }),
+
+      const fileNameArray = file.originalname.split('.');
+
+      callback(
+        null,
+        'audio' + Date.now() + '.' + fileNameArray[fileNameArray.length - 1]
+      );
+    } catch (err) {
+      return callback(new Error('에러가 발생했습니다'));
+    }
+  },
+  acl: 'public-read',
 });
+
+const audioFileUpload = multer({
+  storage,
+});
+
+module.exports = audioFileUpload;

@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const userShcema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
@@ -10,12 +10,12 @@ const userShcema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  recordHistory: [
+  reportHistory: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Record',
+      ref: 'Report',
     },
   ],
 });
 
-module.exports = mongoose.model('User', userShcema);
+module.exports = mongoose.model('User', userSchema);
