@@ -32,7 +32,7 @@ exports.createBook = async (req, res) => {
     author: authors[0],
     imageUrl: thumbnail,
     introduction: contents,
-    reviwerHistory: [],
+    reviewHistory: [],
   });
 
   res.json({ result: 'ok' });

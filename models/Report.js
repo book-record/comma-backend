@@ -22,7 +22,7 @@ const ReportSchema = new mongoose.Schema({
     required: true,
   },
   dDay: {
-    type: Date,
+    type: String,
     required: true,
   },
 });
