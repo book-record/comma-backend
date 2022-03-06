@@ -42,3 +42,10 @@ exports.createReport = async (req, res) => {
     result: 'ok',
   });
 };
+
+exports.getReport = async (req, res) => {
+  const { id } = req.params;
+  const report = await Report.findById(id);
+
+  res.json(report);
+};

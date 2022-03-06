@@ -7,4 +7,6 @@ router.get('/:id/list', reportController.getReportList);
 
 router.post('/new', reportController.createReport);
 
+router.get('/:id', reportController.getReport);
+
 module.exports = router;
