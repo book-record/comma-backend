@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
 
 const ReportSchema = new mongoose.Schema({
-  id: {
-    type: mongoose.Types.ObjectId,
-    required: true,
-  },
   bookTitle: {
     type: String,
     required: true,

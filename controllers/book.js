@@ -44,7 +44,6 @@ exports.createAudio = async (req, res) => {
   const user = await User.findById({ _id: userId });
 
   const result = await Review.create({
-    id: user._id,
     nickname: user.nickname,
     sound: awsAudioFile,
     likes: [],
