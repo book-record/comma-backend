@@ -17,10 +17,10 @@ const BookSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  reviewerHistory: [
+  reviewHistory: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Reviewer',
+      ref: 'Review',
     },
   ],
 });

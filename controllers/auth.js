@@ -7,7 +7,7 @@ exports.signIn = async (req, res, next) => {
   let user = await User.findOne({ email }).lean();
 
   if (!user) {
-    user = await User.create({ email, nickname, recordHistory: [] });
+    user = await User.create({ email, nickname, reportHistory: [] });
   }
 
   const accessToken = jwt.sign(

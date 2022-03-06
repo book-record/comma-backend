@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const RecordSchema = new mongoose.Schema({
+const ReportSchema = new mongoose.Schema({
   id: {
     type: mongoose.Types.ObjectId,
     required: true,
@@ -27,4 +27,4 @@ const RecordSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('Record', RecordSchema);
+module.exports = mongoose.model('Report', ReportSchema);

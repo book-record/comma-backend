@@ -1,9 +1,8 @@
 const express = require('express');
 
-const reviwerController = require('../controllers/review');
-
+const reviewController = require('../controllers/review');
 const router = express.Router();
 
-router.put('/', reviwerController.updateReview);
+router.put('/', reviewController.updateReview);
 
 module.exports = router;

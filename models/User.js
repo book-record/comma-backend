@@ -10,10 +10,10 @@ const userShcema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  recordHistory: [
+  reportHistory: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Record',
+      ref: 'Report',
     },
   ],
 });
