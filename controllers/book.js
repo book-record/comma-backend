@@ -6,7 +6,6 @@ exports.getBookList = async (req, res) => {
   const PAGE_SIZE = 8;
   const page = parseInt(req.query.page || '0');
   const total = await Book.countDocuments({});
-
   const bookList = await Book.find({})
     .limit(PAGE_SIZE)
     .skip(PAGE_SIZE * page);
@@ -44,6 +43,7 @@ exports.createAudio = async (req, res) => {
   const user = await User.findById({ _id: userId });
 
   const result = await Review.create({
+    id: user.id,
     nickname: user.nickname,
     sound: awsAudioFile,
     likes: [],
