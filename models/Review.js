@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const ReviewSchema = new mongoose.Schema({
+  id: {
+    type: mongoose.Types.ObjectId,
+    required: true,
+  },
   nickname: {
     type: String,
     required: true,

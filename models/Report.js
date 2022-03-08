@@ -17,7 +17,11 @@ const ReportSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  dDay: {
+  startDate: {
+    type: String,
+    required: true,
+  },
+  finishDate: {
     type: String,
     required: true,
   },

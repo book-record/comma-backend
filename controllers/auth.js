@@ -29,3 +29,19 @@ exports.signIn = async (req, res, next) => {
     token: accessToken,
   });
 };
+
+exports.checkUser = async (req, res, next) => {
+  const token = req.headers.authorization.split(' ');
+  try {
+    if (token) {
+      const user = await User.findOne(token.email);
+      return res.json({
+        userId: user._id,
+        email: user.email,
+        nickname: user.nickname,
+      });
+    }
+  } catch (error) {
+    return error;
+  }
+};
