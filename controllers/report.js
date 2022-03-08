@@ -30,8 +30,6 @@ exports.createReport = async (req, res) => {
   const { id, bookTitle, imageUrl, title, text, startDate, finishDate } =
     req.body;
 
-  console.log(id, bookTitle, imageUrl, title, text, startDate, finishDate);
-
   const result = await Report.create({
     bookTitle,
     imageUrl,
@@ -45,61 +43,34 @@ exports.createReport = async (req, res) => {
     $push: { reportHistory: result._id },
   });
 
-  const date = new Date(finishDate);
-  console.log(date);
+  const finish = new Date(finishDate);
 
-  const mailSender = {
-    sendGmail: function () {
-      const transporter = nodemailer.createTransport({
-        service: 'gmail',
-        host: 'smtp.gmail.com',
-        secure: false,
-        auth: {
-          user: process.env.NODEMAILER_USER,
-          pass: process.env.NODEMAILER_PASS,
-        },
-      });
-
-      transporter.sendMail({
-        from: `"WDMA TEAM" <${process.env.NODEMAILER_USER}>`,
-        to: user.email,
-        subject: 'd-day 이메일 도착했습니다',
-        text: 'd-day 이메일 도착',
-        html: `
-        <h1>이메일이 도착했습니다</h1>
-        <b>${startDate.slice(0, 11)}에 보낸 이메일이 도착했습니다<b/>
-        <a href="http://localhost:3000>페이지로 가기</a>
-        `,
-      });
-    },
+  const mailOptions = {
+    from: `"Comma" <${process.env.NODEMAILER_USER}>`,
+    to: user.email,
+    subject: '타임캡슐이 도착했습니다',
+    text: 'd-day 이메일 도착',
+    html: `
+      <h2>${startDate.slice(0, 10)}일에 보낸 당신의 이야기가 도착했습니다<h2/>
+      <br>
+      <br>
+      <a href="http://localhost:3000/report/${result._id}">페이지로 가기</a>
+    `,
   };
 
-  schedule.scheduleJob(date, () => {
-    console.log('message');
-    mailSender.sendGmail();
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    host: 'smtp.gmail.com',
+    secure: false,
+    auth: {
+      user: process.env.NODEMAILER_USER,
+      pass: process.env.NODEMAILER_PASS,
+    },
   });
 
-  // let transporter = nodemailer.createTransport({
-  //   service: 'gmail',
-  //   host: 'smtp.gmail.com',
-  //   secure: false,
-  //   auth: {
-  //     user: process.env.NODEMAILER_USER,
-  //     pass: process.env.NODEMAILER_PASS,
-  //   },
-  // });
-
-  // await transporter.sendMail({
-  //   from: `"WDMA TEAM" <${process.env.NODEMAILER_USER}>`,
-  //   to: user.email,
-  //   subject: 'd-day 이메일 도착했습니다',
-  //   text: 'd-day 이메일 도착',
-  //   html: `
-  //   <h1>이메일이 도착했습니다</h1>
-  //   <b>${startDate.slice(0, 11)}에 보낸 이메일이 도착했습니다<b/>
-  //   <a href="http://localhost:3000>페이지로 가기</a>
-  //   `,
-  // });
+  schedule.scheduleJob(finish, () => {
+    transporter.sendMail(mailOptions);
+  });
 
   res.json({
     result: 'ok',
