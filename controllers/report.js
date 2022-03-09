@@ -9,7 +9,6 @@ const User = require('../models/User');
 exports.getReportList = async (req, res) => {
   const { id } = req.params;
   const PAGE_SIZE = 8;
-
   const page = parseInt(req.query.page || '0');
   const allReport = await User.findById(id).populate('reportHistory');
 
@@ -43,7 +42,7 @@ exports.createReport = async (req, res) => {
     $push: { reportHistory: result._id },
   });
 
-  const finish = new Date(finishDate);
+  const dDay = new Date(finishDate);
 
   const mailOptions = {
     from: `"Comma" <${process.env.NODEMAILER_USER}>`,
@@ -68,7 +67,7 @@ exports.createReport = async (req, res) => {
     },
   });
 
-  schedule.scheduleJob(finish, () => {
+  schedule.scheduleJob(dDay, () => {
     transporter.sendMail(mailOptions);
   });
 

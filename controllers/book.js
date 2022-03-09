@@ -17,7 +17,7 @@ exports.getBookList = async (req, res) => {
 };
 
 exports.createBook = async (req, res) => {
-  let { title, authors, thumbnail, contents } = req.body;
+  const { title, authors, thumbnail, contents } = req.body;
   const allBooks = await Book.find({});
 
   for (const key of allBooks) {
@@ -61,9 +61,6 @@ exports.createAudio = async (req, res) => {
 exports.getBook = async (req, res) => {
   const { id } = req.params;
   const book = await Book.findById(id).populate('reviewHistory');
-  if (!book) {
-    return res.json({ error: '책이 존재 하지 않습니다' });
-  }
 
   res.json(book);
 };
