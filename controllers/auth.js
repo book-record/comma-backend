@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/User');
 
-exports.signIn = async (req, res, next) => {
+exports.signIn = async (req, res) => {
   const { email, nickname } = req.body;
   let user = await User.findOne({ email }).lean();
 
@@ -30,18 +30,17 @@ exports.signIn = async (req, res, next) => {
   });
 };
 
-exports.checkUser = async (req, res, next) => {
-  const token = req.headers.authorization.split(' ');
-  try {
-    if (token) {
-      const user = await User.findOne(token.email);
-      return res.json({
-        userId: user._id,
-        email: user.email,
-        nickname: user.nickname,
-      });
-    }
-  } catch (error) {
-    return error;
+exports.checkUser = async (req, res) => {
+  const accessToken = req.headers.authorization.split(' ')[1];
+  const userEmail = jwt.verify(accessToken, process.env.JWT_SECRET).email;
+
+  if (accessToken) {
+    const user = await User.findOne({ email: userEmail }).lean();
+
+    return res.json({
+      userId: user._id,
+      email: user.email,
+      nickname: user.nickname,
+    });
   }
 };
