@@ -32,8 +32,10 @@ exports.signIn = async (req, res) => {
 
 exports.checkUser = async (req, res) => {
   const accessToken = req.headers.authorization.split(' ')[1];
+  if (!accessToken) {
+    return res.json({ result: 'error' });
+  }
   const userEmail = jwt.verify(accessToken, process.env.JWT_SECRET).email;
-
   if (accessToken) {
     const user = await User.findOne({ email: userEmail }).lean();
 
