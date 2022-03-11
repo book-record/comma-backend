@@ -9,17 +9,9 @@ exports.updateReview = async (req, res) => {
   }
 
   if (good) {
-    await Review.findByIdAndUpdate(
-      reviewerId,
-      { $push: { likes: userId } },
-      { new: true }
-    );
+    await Review.findByIdAndUpdate(reviewerId, { $push: { likes: userId } });
   } else {
-    await Review.findByIdAndUpdate(
-      reviewerId,
-      { $pull: { likes: userId } },
-      { new: true }
-    );
+    await Review.findByIdAndUpdate(reviewerId, { $pull: { likes: userId } });
   }
 
   res.json({ result: 'ok' });
