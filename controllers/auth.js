@@ -4,7 +4,7 @@ const User = require('../models/User');
 
 exports.signIn = async (req, res) => {
   const { email, nickname } = req.body;
-  let user = await User.findOne({ email }).lean();
+  let user = await User.findOne({ email });
 
   if (!user) {
     user = await User.create({ email, nickname, reportHistory: [] });
@@ -36,13 +36,11 @@ exports.checkUser = async (req, res) => {
     return res.json({ result: 'error' });
   }
   const userEmail = jwt.verify(accessToken, process.env.JWT_SECRET).email;
-  if (accessToken) {
-    const user = await User.findOne({ email: userEmail }).lean();
+  const user = await User.findOne({ email: userEmail });
 
-    return res.json({
-      userId: user._id,
-      email: user.email,
-      nickname: user.nickname,
-    });
-  }
+  res.json({
+    userId: user._id,
+    email: user.email,
+    nickname: user.nickname,
+  });
 };
