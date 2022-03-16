@@ -53,7 +53,7 @@ exports.createReport = async (req, res) => {
       <h2>${startDate.slice(0, 10)}일에 보낸 당신의 이야기가 도착했습니다<h2/>
       <br>
       <p>당신의 이야기를 보길 윈한다면 아래 "떠나기" 를 클릭해주세요</p>
-      <a href="http://localhost:3000/report/${result._id}">떠나기</a>
+      <a href="https://yoran.cc/report/${result._id}">떠나기</a>
     `,
   };
 
